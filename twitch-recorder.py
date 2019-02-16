@@ -117,7 +117,7 @@ class TwitchRecorder:
 
                 # start streamlink process and timeout after 4 hours
                 subprocess.call(["streamlink", "--twitch-oauth-token", self.oauth_token,
-                                 "twitch.tv/" + self.username, self.quality, "-o", recorded_filename], timeout=1000 * 60 * 4)
+                                 "twitch.tv/" + self.username, self.quality, "-o", recorded_filename], timeout=60 * 60 * 4)
 
                 print("Recording stream is done. Fixing video file.")
                 if(os.path.exists(recorded_filename) is True):
