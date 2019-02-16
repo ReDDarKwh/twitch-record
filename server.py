@@ -26,6 +26,8 @@ class StaticServer(BaseHTTPRequestHandler):
         else:
             self.send_header('Content-type', 'text/html')
         self.end_headers()
+
+        
         with open(filename, 'rb') as fh:
             html = fh.read()
             #html = bytes(html, 'utf8')

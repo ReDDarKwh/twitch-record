@@ -8,6 +8,7 @@ import sys
 import subprocess
 import datetime
 import getopt
+import shutil
 
 
 class TwitchRecorder:
@@ -22,7 +23,7 @@ class TwitchRecorder:
 
         # user configuration
         self.username = "juniantr"
-        self.quality = "best"
+        self.quality = "720p"
 
     def run(self):
         # path to recorded stream
@@ -39,32 +40,29 @@ class TwitchRecorder:
         if(os.path.isdir(self.processed_path) is False):
             os.makedirs(self.processed_path)
 
-        # make sure the interval to check user availability is not less than 15 seconds
-        if(self.refresh < 15):
-            print("Check interval should not be lower than 15 seconds.")
-            self.refresh = 15
-            print("System set check interval to 15 seconds.")
+        # remove the last videos recorded for space
 
-        # fix videos from previous recording session
-        try:
-            video_list = [f for f in os.listdir(self.recorded_path) if os.path.isfile(
-                os.path.join(self.recorded_path, f))]
-            if(len(video_list) > 0):
-                print('Fixing previously recorded files.')
-            for f in video_list:
-                recorded_filename = os.path.join(self.recorded_path, f)
-                print('Fixing ' + recorded_filename + '.')
-                try:
-                    subprocess.call([self.ffmpeg_path, '-err_detect', 'ignore_err', '-i',
-                                     recorded_filename, '-c', 'copy', os.path.join(self.processed_path, f)])
-                    os.remove(recorded_filename)
-                except Exception as e:
-                    print(e)
-        except Exception as e:
-            print(e)
+        for the_file in os.listdir(self.recorded_path):
+            file_path = os.path.join(self.recorded_path, the_file)
+            try:
+                if os.path.isfile(file_path):
+                    os.unlink(file_path)
+
+            except Exception as e:
+                print(e)
+
+        for the_file in os.listdir(self.processed_path):
+            file_path = os.path.join(self.processed_path, the_file)
+            try:
+                if os.path.isfile(file_path):
+                    os.unlink(file_path)
+
+            except Exception as e:
+                print(e)
 
         print("Checking for", self.username, "every", self.refresh,
               "seconds. Record with", self.quality, "quality.")
+
         self.loopcheck()
 
     def check_user(self):
@@ -117,9 +115,9 @@ class TwitchRecorder:
 
                 recorded_filename = os.path.join(self.recorded_path, filename)
 
-                # start streamlink process
+                # start streamlink process and timeout after 4 hours
                 subprocess.call(["streamlink", "--twitch-oauth-token", self.oauth_token,
-                                 "twitch.tv/" + self.username, self.quality, "-o", recorded_filename])
+                                 "twitch.tv/" + self.username, self.quality, "-o", recorded_filename], timeout=1000 * 60 * 4)
 
                 print("Recording stream is done. Fixing video file.")
                 if(os.path.exists(recorded_filename) is True):
