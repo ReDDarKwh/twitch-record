@@ -130,8 +130,8 @@ class TwitchRecorder:
                 else:
                     print("Skip fixing. File not found.")
 
-                print("Fixing is done. Going back to checking..")
-                time.sleep(self.refresh)
+                print("Fixing is done. exiting")
+                break
 
 
 def main(argv):
