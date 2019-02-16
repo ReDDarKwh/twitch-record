@@ -18,7 +18,7 @@ class TwitchRecorder:
         self.oauth_token = "6hmqdun3lcrunsrl5roloic36ahczu"
         self.ffmpeg_path = 'ffmpeg'
         self.refresh = 30.0
-        self.root_path = "/home/twitchVideos"
+        self.root_path = "/home/pi/twitchVideos"
 
         # user configuration
         self.username = "juniantr"
