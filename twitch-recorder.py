@@ -16,7 +16,7 @@ class TwitchRecorder:
         # global configuration
         self.client_id = "jzkbprff40iqj646a697cyrvl0zt2m6"  # don't change this
         # get oauth token value by typing `streamlink --twitch-oauth-authenticate` in terminal
-        self.oauth_token = "6hmqdun3lcrunsrl5roloic36ahczu"
+        self.oauth_token = "jdlbpdj1a1z0jiaiajsq0j3ytcjsn4"
         self.ffmpeg_path = 'ffmpeg'
         self.refresh = 30.0
         self.root_path = "/home/pi/twitchVideos"
